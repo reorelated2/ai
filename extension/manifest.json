@@ -1,0 +1,61 @@
+{
+  "manifest_version": 3,
+  "name": "KyleOS Real Estate Operating Agent",
+  "version": "1.0.0",
+  "description": "Kyle's real estate chief of staff — Agent Tools, MLS, OneHome, Gmail, CRM, offer prep, and KPI protection.",
+  "permissions": [
+    "activeTab",
+    "storage",
+    "sidePanel",
+    "scripting",
+    "identity",
+    "tabs"
+  ],
+  "host_permissions": [
+    "https://redfin.com/*",
+    "https://*.redfin.com/*",
+    "https://matrix.miamiagenttools.com/*",
+    "https://*.miamiagenttools.com/*",
+    "https://onehome.com/*",
+    "https://*.onehome.com/*",
+    "https://mail.google.com/*",
+    "https://followupboss.com/*",
+    "https://*.followupboss.com/*"
+  ],
+  "background": {
+    "service_worker": "src/background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://redfin.com/*",
+        "https://*.redfin.com/*",
+        "https://matrix.miamiagenttools.com/*",
+        "https://*.miamiagenttools.com/*",
+        "https://onehome.com/*",
+        "https://*.onehome.com/*",
+        "https://mail.google.com/*",
+        "https://followupboss.com/*",
+        "https://*.followupboss.com/*"
+      ],
+      "js": ["src/content.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "side_panel": {
+    "default_path": "panel/panel.html"
+  },
+  "action": {
+    "default_title": "KyleOS",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  }
+}
