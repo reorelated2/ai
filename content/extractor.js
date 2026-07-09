@@ -619,7 +619,7 @@ function detectLeadSource(text) {
   const lower = text.toLowerCase();
   if (lower.includes('redfin')) return 'Redfin';
   if (lower.includes('zillow')) return 'Zillow';
-  if (lower.includes('realtor.com')) return 'Realtor.com';
+  if (/\brealtor\.com\b/.test(lower)) return 'Realtor.com';
   if (lower.includes('referral')) return 'Referral';
   if (lower.includes('sphere')) return 'Sphere';
   return 'Unknown';

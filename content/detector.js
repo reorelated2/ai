@@ -26,16 +26,21 @@ export function detectPage() {
   };
 }
 
+// Match hostname as exact domain or subdomain (e.g. "foo.redfin.com" or "redfin.com")
+function isDomain(hostname, domain) {
+  return hostname === domain || hostname.endsWith('.' + domain);
+}
+
 function detectPlatform(hostname) {
-  if (hostname.includes('redfin.com')) return PLATFORM.AGENT_TOOLS;
-  if (hostname.includes('mail.google.com')) return PLATFORM.GMAIL;
-  if (hostname.includes('onehome.com')) return PLATFORM.ONEHOME;
+  if (isDomain(hostname, 'redfin.com')) return PLATFORM.AGENT_TOOLS;
+  if (isDomain(hostname, 'mail.google.com')) return PLATFORM.GMAIL;
+  if (isDomain(hostname, 'onehome.com')) return PLATFORM.ONEHOME;
   if (
-    hostname.includes('mlsgrid.com') ||
-    hostname.includes('matrix.realtors.com') ||
-    hostname.includes('flexmls.com') ||
-    hostname.includes('miamirealtors.com') ||
-    hostname.includes('miamireb.com')
+    isDomain(hostname, 'mlsgrid.com') ||
+    isDomain(hostname, 'matrix.realtors.com') ||
+    isDomain(hostname, 'flexmls.com') ||
+    isDomain(hostname, 'miamirealtors.com') ||
+    isDomain(hostname, 'miamireb.com')
   ) return PLATFORM.MLS;
   return PLATFORM.UNKNOWN;
 }
