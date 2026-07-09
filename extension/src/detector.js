@@ -111,8 +111,13 @@ function detectPage() {
   let pageType = PAGE_TYPES.UNKNOWN;
   const meta   = {};
 
+  // Returns true when host exactly equals domain or ends with .domain
+  function hostMatches(h, domain) {
+    return h === domain || h.endsWith('.' + domain);
+  }
+
   // ── AGENT TOOLS (redfin internal tool) ───────────────────────────────────
-  if (host.includes('redfin.com') || host.includes('miamiagenttools.com')) {
+  if (hostMatches(host, 'redfin.com') || hostMatches(host, 'miamiagenttools.com')) {
     platform = PLATFORMS.AGENT_TOOLS;
 
     // Check URL path patterns
@@ -169,12 +174,14 @@ function detectPage() {
   }
 
   // ── MLS ───────────────────────────────────────────────────────────────────
+  // MLS hostnames are internal/proprietary systems. Fragment matching is safe
+  // because these are distinct platform identifiers, not security boundaries.
   else if (
     host.includes('matrix') ||
     host.includes('mls') ||
     host.includes('crmls') ||
     host.includes('bright') ||
-    host.includes('har.com') ||
+    hostMatches(host, 'har.com') ||
     host.includes('mlxchange') ||
     // MIAMI MLS (Miami Realtors / Flexmls / Clareity)
     host.includes('miamiboards') ||
@@ -206,7 +213,7 @@ function detectPage() {
   }
 
   // ── ONEHOME ───────────────────────────────────────────────────────────────
-  else if (host.includes('onehome.com') || host.includes('onehome')) {
+  else if (hostMatches(host, 'onehome.com')) {
     platform = PLATFORMS.ONEHOME;
 
     if (path.includes('/contact') || path.includes('/client')) {
@@ -219,7 +226,7 @@ function detectPage() {
   }
 
   // ── GMAIL ─────────────────────────────────────────────────────────────────
-  else if (host.includes('mail.google.com')) {
+  else if (host === 'mail.google.com') {
     platform = PLATFORMS.GMAIL;
 
     const hash = window.location.hash;
@@ -234,7 +241,7 @@ function detectPage() {
   }
 
   // ── FOLLOW UP BOSS ───────────────────────────────────────────────────────
-  else if (host.includes('followupboss.com')) {
+  else if (hostMatches(host, 'followupboss.com')) {
     platform = PLATFORMS.FUB;
 
     if (path.includes('/contacts/') && /\/contacts\/\d+/.test(path)) {

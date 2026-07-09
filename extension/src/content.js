@@ -13,6 +13,11 @@
   // without a bundler; these are self-contained functional versions).
 
   // ── Page Detection ───────────────────────────────────────────────────────
+  // Returns true when `host` equals `domain` or ends with `.domain`
+  function hostMatches(host, domain) {
+    return host === domain || host.endsWith('.' + domain);
+  }
+
   function detectPage() {
     const host   = location.hostname.toLowerCase();
     const path   = location.pathname.toLowerCase();
@@ -24,7 +29,7 @@
     const meta   = {};
 
     // Agent Tools / Redfin
-    if (host.includes('redfin.com') || host.includes('miamiagenttools.com')) {
+    if (hostMatches(host, 'redfin.com') || hostMatches(host, 'miamiagenttools.com')) {
       platform = 'agent_tools';
 
       if (/\/customers\/\d+/.test(path) || /\/agent\/customers\/\d+/.test(path)) {
@@ -57,7 +62,8 @@
         if (exp) { pageType = 'at_expanded_followup'; meta.expandedRow = true; }
       }
     }
-    // MLS
+    // MLS — match on known MLS hostnames (fragment match is safe here; these are
+    // recognizable proprietary hostnames, not user-controllable security boundaries)
     else if (
       host.includes('matrix') || host.includes('flexmls') || host.includes('mlxchange') ||
       host.includes('fnismls') || host.includes('miamiboards') || host.includes('rapattoni') ||
@@ -73,12 +79,12 @@
         pageType = 'mls_listing';
     }
     // OneHome
-    else if (host.includes('onehome.com')) {
+    else if (hostMatches(host, 'onehome.com')) {
       platform = 'onehome';
       pageType = path.includes('/contact') ? 'oh_contact' : path.includes('/search') ? 'oh_search' : 'oh_portal';
     }
     // Gmail
-    else if (host.includes('mail.google.com')) {
+    else if (host === 'mail.google.com') {
       platform = 'gmail';
       const hash = location.hash;
       if (hash.includes('#compose') || document.querySelector('[aria-label="New Message"]'))
@@ -87,7 +93,7 @@
         pageType = _isRedfinLeadEmail() ? 'gmail_lead_email' : 'gmail_inbox';
     }
     // FUB
-    else if (host.includes('followupboss.com')) {
+    else if (hostMatches(host, 'followupboss.com')) {
       platform = 'fub';
       pageType = /\/contacts\/\d+/.test(path) ? 'fub_contact' : path.includes('/pipeline') ? 'fub_pipeline' : 'fub_dashboard';
     }
