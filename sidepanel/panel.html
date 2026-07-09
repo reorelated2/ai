@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KyleOS</title>
+  <link rel="stylesheet" href="panel.css" />
+</head>
+<body>
+  <div id="app">
+    <!-- Header -->
+    <header id="header">
+      <div class="header-left">
+        <span class="logo">KyleOS</span>
+        <span id="mode-badge" class="badge badge--idle">Ready</span>
+      </div>
+      <div class="header-right">
+        <button id="btn-manual-analyze" class="btn btn--primary btn--sm" title="Analyze this page">
+          Analyze
+        </button>
+        <button id="btn-settings" class="btn btn--ghost btn--icon" title="Settings">&#9881;</button>
+      </div>
+    </header>
+
+    <!-- Page Context Bar -->
+    <div id="context-bar" class="context-bar hidden">
+      <span id="context-platform" class="context-platform"></span>
+      <span id="context-page" class="context-page"></span>
+    </div>
+
+    <!-- Main Output Area -->
+    <main id="output" class="output">
+      <div id="idle-state" class="idle-state">
+        <p class="idle-message">Navigate to Agent Tools, MLS, OneHome, or Gmail to get started.</p>
+        <p class="idle-hint">Customer detail pages auto-analyze. Use <strong>Analyze</strong> for everything else.</p>
+      </div>
+
+      <div id="loading-state" class="loading-state hidden">
+        <div class="spinner"></div>
+        <p>Reading page...</p>
+      </div>
+
+      <div id="result-state" class="result-state hidden">
+        <!-- Dynamically populated -->
+      </div>
+
+      <div id="error-state" class="error-state hidden">
+        <p id="error-message" class="error-message"></p>
+      </div>
+    </main>
+
+    <!-- Approval Footer -->
+    <div id="approval-footer" class="approval-footer hidden">
+      <!-- Approval buttons injected here -->
+    </div>
+
+    <!-- Settings Panel -->
+    <div id="settings-panel" class="settings-panel hidden">
+      <h2>Settings</h2>
+      <div class="setting-row">
+        <label for="api-key">Brain API Key</label>
+        <input type="password" id="api-key" placeholder="sk-..." autocomplete="off" />
+      </div>
+      <div class="setting-row">
+        <label for="agent-name">Agent Name</label>
+        <input type="text" id="agent-name" value="Kyle Kleinman" />
+      </div>
+      <div class="setting-row">
+        <label>
+          <input type="checkbox" id="auto-analyze-toggle" checked />
+          Auto-analyze customer detail pages
+        </label>
+      </div>
+      <button id="btn-save-settings" class="btn btn--primary">Save Settings</button>
+      <button id="btn-close-settings" class="btn btn--ghost">Close</button>
+    </div>
+  </div>
+
+  <script src="panel.js" type="module"></script>
+</body>
+</html>
